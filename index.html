@@ -20,6 +20,10 @@
   <main id="app"></main>
   <div id="drag-layer"></div>
   <div id="toast"></div>
+  <!-- Registered before the game scripts so updates still arrive even if a script fails to start. -->
+  <script>
+    if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => { });
+  </script>
   <script src="js/data.js"></script>
   <script src="js/character.js"></script>
   <script src="js/props.js"></script>

@@ -1,5 +1,5 @@
-// Offline support: serve from cache, refresh the cache in the background.
-const CACHE = 'olivijos-pasaulis-v2';
+// Offline support. Always try the network first (so new versions show up right away), fall back to the cache offline.
+const CACHE = 'olivijos-pasaulis-v3';
 const ASSETS = [
   './', 'index.html', 'style.css', 'manifest.webmanifest',
   'js/data.js', 'js/character.js', 'js/props.js', 'js/sound.js', 'js/state.js', 'js/engine.js', 'js/map.js', 'js/app.js',
@@ -9,23 +9,27 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+  // cache: 'reload' skips the browser's HTTP cache so we never store stale copies.
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys()
-    .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
-    .then(() => self.clients.claim()));
+  e.waitUntil((async () => {
+    const old = (await caches.keys()).filter(k => k !== CACHE);
+    await Promise.all(old.map(k => caches.delete(k)));
+    await self.clients.claim();
+    // Pages opened by an older version may be running a broken mix of files: reload them.
+    if (old.length) (await self.clients.matchAll({ type: 'window' })).forEach(c => c.navigate(c.url));
+  })());
 });
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET' || new URL(e.request.url).origin !== location.origin) return;
-  e.respondWith(caches.open(CACHE).then(async cache => {
-    const cached = await cache.match(e.request, { ignoreSearch: true });
-    const fresh = fetch(e.request).then(res => {
-      if (res.ok) cache.put(e.request, res.clone());
-      return res;
-    }).catch(() => cached);
-    return cached || fresh;
-  }));
+  e.respondWith(caches.open(CACHE).then(cache =>
+    fetch(e.request.url, { cache: 'no-cache' })
+      .then(res => {
+        if (res.ok) cache.put(e.request, res.clone());
+        return res;
+      })
+      .catch(() => cache.match(e.request, { ignoreSearch: true }))));
 });
