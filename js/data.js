@@ -1,96 +1,93 @@
-// Game catalog: looks, clothes, food, pets, city buildings and furniture.
+// Catalog: looks, clothes, props (food, toys, things) and pets.
 const N = (lt, en) => ({ lt, en });
 
 const SKINS = ['#FFE3CF', '#F6CBA8', '#E3AD84', '#C68642', '#8D5524', '#5C3A21'];
-const HAIR_COLORS = ['#2B1B10', '#6B3E26', '#B5651D', '#E8C170', '#F7E7A8', '#D9534F', '#FF8FC7', '#9B7BEA', '#4FC3F7'];
-const HAIR_STYLES = ['long', 'ponytail', 'pigtails', 'bun', 'bob', 'curly', 'short'];
+const HAIR_COLORS = ['#2B1B10', '#6B3E26', '#B5651D', '#E8C170', '#F7E7A8', '#D9D9D9', '#D9534F', '#FF8FC7', '#9B7BEA', '#4FC3F7'];
+const HAIR_STYLES = ['long', 'ponytail', 'pigtails', 'braids', 'bun', 'bob', 'curly', 'short', 'spiky', 'bald'];
 const EYE_COLORS = ['#3B2416', '#2E6DB4', '#3C8D4F', '#7A7A7A'];
+const BEARDS = ['none', 'mustache', 'beard'];
+const SIZES = ['kid', 'adult'];
+const SLOTS = ['top', 'bottom', 'shoes', 'hat', 'glasses', 'neck'];
 
-// slot: top | bottom | shoes | hat | glasses. A "full" top is a dress and hides the bottom.
+// A "full" top is a dress or costume and hides the bottom.
 const CLOTHES = [
-  { id: 'tee-pink', slot: 'top', kind: 'tee', color: '#FF8FC7', price: 0, name: N('Rožiniai marškinėliai', 'Pink T-shirt') },
-  { id: 'tee-blue', slot: 'top', kind: 'tee', color: '#5DADE2', price: 0, name: N('Mėlyni marškinėliai', 'Blue T-shirt') },
-  { id: 'tee-stripe', slot: 'top', kind: 'stripes', color: '#FFC94D', price: 15, name: N('Dryžuoti marškinėliai', 'Striped T-shirt') },
-  { id: 'hoodie-purple', slot: 'top', kind: 'hoodie', color: '#9B7BEA', price: 25, name: N('Violetinis džemperis', 'Purple hoodie') },
-  { id: 'hoodie-green', slot: 'top', kind: 'hoodie', color: '#66BB6A', price: 25, name: N('Žalias džemperis', 'Green hoodie') },
-  { id: 'dress-red', slot: 'top', kind: 'dress', full: true, color: '#EF5350', price: 30, name: N('Raudona suknelė', 'Red dress') },
-  { id: 'dress-yellow', slot: 'top', kind: 'dress', full: true, color: '#FFD54F', price: 30, name: N('Geltona suknelė', 'Yellow dress') },
-  { id: 'dress-mint', slot: 'top', kind: 'dress', full: true, color: '#7FDBCA', price: 30, name: N('Mėtinė suknelė', 'Mint dress') },
-  { id: 'princess', slot: 'top', kind: 'princess', full: true, color: '#F8BBD0', price: 60, name: N('Princesės suknelė', 'Princess dress') },
-  { id: 'pants-blue', slot: 'bottom', kind: 'pants', color: '#3F6FB5', price: 0, name: N('Džinsai', 'Jeans') },
-  { id: 'skirt-pink', slot: 'bottom', kind: 'skirt', color: '#FF6FB5', price: 0, name: N('Rožinis sijonas', 'Pink skirt') },
-  { id: 'skirt-purple', slot: 'bottom', kind: 'skirt', color: '#9B7BEA', price: 15, name: N('Violetinis sijonas', 'Purple skirt') },
-  { id: 'shorts-green', slot: 'bottom', kind: 'shorts', color: '#66BB6A', price: 12, name: N('Žali šortai', 'Green shorts') },
-  { id: 'pants-red', slot: 'bottom', kind: 'pants', color: '#E57373', price: 18, name: N('Raudonos kelnės', 'Red trousers') },
-  { id: 'sneakers-white', slot: 'shoes', kind: 'sneakers', color: '#FFFFFF', price: 0, name: N('Balti sportbačiai', 'White sneakers') },
-  { id: 'shoes-pink', slot: 'shoes', kind: 'sneakers', color: '#FF8FC7', price: 15, name: N('Rožiniai bateliai', 'Pink shoes') },
-  { id: 'boots-brown', slot: 'shoes', kind: 'boots', color: '#8D6E63', price: 20, name: N('Rudi batai', 'Brown boots') },
-  { id: 'shoes-gold', slot: 'shoes', kind: 'flats', color: '#FFC107', price: 35, name: N('Auksiniai bateliai', 'Golden shoes') },
-  { id: 'bow-pink', slot: 'hat', kind: 'bow', color: '#FF4FA0', price: 10, name: N('Kaspinas', 'Hair bow') },
-  { id: 'flower', slot: 'hat', kind: 'flower', color: '#FFEB3B', price: 12, name: N('Gėlytė', 'Flower') },
-  { id: 'cap-red', slot: 'hat', kind: 'cap', color: '#E53935', price: 15, name: N('Kepuraitė', 'Cap') },
-  { id: 'crown', slot: 'hat', kind: 'crown', color: '#FFC107', price: 50, name: N('Karūna', 'Crown') },
-  { id: 'glasses-round', slot: 'glasses', kind: 'round', color: '#5D4037', price: 15, name: N('Akiniai', 'Glasses') },
-  { id: 'sunglasses', slot: 'glasses', kind: 'sun', color: '#222222', price: 20, name: N('Akiniai nuo saulės', 'Sunglasses') },
-  { id: 'glasses-heart', slot: 'glasses', kind: 'heart', color: '#FF4FA0', price: 25, name: N('Širdelių akiniai', 'Heart glasses') },
+  { id: 'tee-pink', slot: 'top', kind: 'tee', color: '#FF8FC7' },
+  { id: 'tee-blue', slot: 'top', kind: 'tee', color: '#5DADE2' },
+  { id: 'tee-red', slot: 'top', kind: 'tee', color: '#E53935' },
+  { id: 'tee-stripe', slot: 'top', kind: 'stripes', color: '#FFC94D' },
+  { id: 'sailor', slot: 'top', kind: 'sailor', color: '#FFFFFF' },
+  { id: 'jersey', slot: 'top', kind: 'jersey', color: '#1B8A3E' },
+  { id: 'knit', slot: 'top', kind: 'knit', color: '#C62828' },
+  { id: 'hoodie-purple', slot: 'top', kind: 'hoodie', color: '#9B7BEA' },
+  { id: 'hoodie-green', slot: 'top', kind: 'hoodie', color: '#66BB6A' },
+  { id: 'raincoat', slot: 'top', kind: 'raincoat', color: '#FFD600' },
+  { id: 'suit', slot: 'top', kind: 'suit', color: '#37474F' },
+  { id: 'apron', slot: 'top', kind: 'apron', color: '#FFFFFF' },
+  { id: 'dress-red', slot: 'top', kind: 'dress', full: true, color: '#EF5350' },
+  { id: 'dress-yellow', slot: 'top', kind: 'dress', full: true, color: '#FFD54F' },
+  { id: 'dress-mint', slot: 'top', kind: 'dress', full: true, color: '#7FDBCA' },
+  { id: 'princess', slot: 'top', kind: 'princess', full: true, color: '#F8BBD0' },
+  { id: 'folk', slot: 'top', kind: 'folk', full: true, color: '#2E7D32' },
+  { id: 'swim', slot: 'top', kind: 'swim', full: true, color: '#FF6FB5' },
+  { id: 'jeans', slot: 'bottom', kind: 'pants', color: '#3F6FB5' },
+  { id: 'pants-dark', slot: 'bottom', kind: 'pants', color: '#455A64' },
+  { id: 'pants-red', slot: 'bottom', kind: 'pants', color: '#E57373' },
+  { id: 'skirt-pink', slot: 'bottom', kind: 'skirt', color: '#FF6FB5' },
+  { id: 'skirt-purple', slot: 'bottom', kind: 'skirt', color: '#9B7BEA' },
+  { id: 'skirt-long', slot: 'bottom', kind: 'longskirt', color: '#5D4037' },
+  { id: 'shorts-green', slot: 'bottom', kind: 'shorts', color: '#66BB6A' },
+  { id: 'shorts-blue', slot: 'bottom', kind: 'shorts', color: '#1E88E5' },
+  { id: 'sneakers-white', slot: 'shoes', kind: 'sneakers', color: '#FFFFFF' },
+  { id: 'shoes-pink', slot: 'shoes', kind: 'sneakers', color: '#FF8FC7' },
+  { id: 'boots-brown', slot: 'shoes', kind: 'boots', color: '#8D6E63' },
+  { id: 'gumboots', slot: 'shoes', kind: 'boots', color: '#FFD600' },
+  { id: 'shoes-gold', slot: 'shoes', kind: 'flats', color: '#FFC107' },
+  { id: 'shoes-black', slot: 'shoes', kind: 'flats', color: '#333333' },
+  { id: 'bow-pink', slot: 'hat', kind: 'bow', color: '#FF4FA0' },
+  { id: 'flower', slot: 'hat', kind: 'flower', color: '#FFEB3B' },
+  { id: 'rue-wreath', slot: 'hat', kind: 'wreath', color: '#2E7D32' },
+  { id: 'cap-red', slot: 'hat', kind: 'cap', color: '#E53935' },
+  { id: 'knit-hat', slot: 'hat', kind: 'knithat', color: '#1E88E5' },
+  { id: 'sunhat', slot: 'hat', kind: 'sunhat', color: '#F3D58A' },
+  { id: 'captain', slot: 'hat', kind: 'captain', color: '#1A237E' },
+  { id: 'chef', slot: 'hat', kind: 'chef', color: '#FFFFFF' },
+  { id: 'crown', slot: 'hat', kind: 'crown', color: '#FFC107' },
+  { id: 'glasses-round', slot: 'glasses', kind: 'round', color: '#5D4037' },
+  { id: 'sunglasses', slot: 'glasses', kind: 'sun', color: '#222222' },
+  { id: 'glasses-heart', slot: 'glasses', kind: 'heart', color: '#FF4FA0' },
+  { id: 'amber', slot: 'neck', kind: 'amber', color: '#F39C12' },
+  { id: 'scarf', slot: 'neck', kind: 'scarf', color: '#E53935' },
+  { id: 'bowtie', slot: 'neck', kind: 'bowtie', color: '#7B1FA2' },
 ];
 
-const FOODS = [
-  { id: 'apple', emoji: '🍎', price: 2, name: N('Obuolys', 'Apple') },
-  { id: 'banana', emoji: '🍌', price: 2, name: N('Bananas', 'Banana') },
-  { id: 'strawberry', emoji: '🍓', price: 3, name: N('Braškė', 'Strawberry') },
-  { id: 'carrot', emoji: '🥕', price: 2, name: N('Morka', 'Carrot') },
-  { id: 'broccoli', emoji: '🥦', price: 2, name: N('Brokolis', 'Broccoli') },
-  { id: 'bread', emoji: '🍞', price: 3, name: N('Duona', 'Bread') },
-  { id: 'milk', emoji: '🥛', price: 3, name: N('Pienas', 'Milk') },
-  { id: 'cheese', emoji: '🧀', price: 4, name: N('Sūris', 'Cheese') },
-  { id: 'pizza', emoji: '🍕', price: 8, name: N('Pica', 'Pizza') },
-  { id: 'pancakes', emoji: '🥞', price: 6, name: N('Blynai', 'Pancakes') },
-  { id: 'icecream', emoji: '🍦', price: 5, name: N('Ledai', 'Ice cream') },
-  { id: 'donut', emoji: '🍩', price: 5, name: N('Spurga', 'Donut') },
-  { id: 'cupcake', emoji: '🧁', price: 6, name: N('Keksiukas', 'Cupcake') },
-  { id: 'cookie', emoji: '🍪', price: 3, name: N('Sausainis', 'Cookie') },
-  { id: 'cake', emoji: '🎂', price: 15, name: N('Tortas', 'Cake') },
-  { id: 'bone', emoji: '🦴', price: 4, name: N('Gyvūnų skanėstas', 'Pet treat') },
-];
+// Props. kind: food | toy | thing | fish. `svg` refers to PROP_SVG, otherwise the emoji is drawn.
+const P = (id, kind, emoji, size = 80) => ({ id, kind, emoji, size });
+const PROPS = Object.fromEntries([
+  // Lithuanian dishes (drawn in props.js)
+  P('cepelinai', 'food', null), P('saltibarsciai', 'food', null), P('kibinai', 'food', null), P('sakotis', 'food', null, 100),
+  P('duona', 'food', null), P('zuvis', 'food', null), P('surelis', 'food', null), P('gira', 'food', null),
+  // Everyday food
+  P('apple', 'food', '🍎'), P('pear', 'food', '🍐'), P('strawberry', 'food', '🍓'), P('cherries', 'food', '🍒'), P('blueberries', 'food', '🫐'),
+  P('cucumber', 'food', '🥒'), P('carrot', 'food', '🥕'), P('potato', 'food', '🥔'), P('tomato', 'food', '🍅'), P('mushroom', 'food', '🍄'),
+  P('watermelon', 'food', '🍉'), P('corn', 'food', '🌽'), P('cheese', 'food', '🧀'), P('milk', 'food', '🥛'), P('egg', 'food', '🥚'),
+  P('honey', 'food', '🍯'), P('pancakes', 'food', '🥞'), P('cake', 'food', '🍰'), P('icecream', 'food', '🍦'), P('lollipop', 'food', '🍭'),
+  P('cookie', 'food', '🍪'), P('donut', 'food', '🍩'), P('coffee', 'food', '☕'), P('tea', 'food', '🍵'), P('juice', 'food', '🧃'),
+  P('fish', 'fish', '🐟'),
+  // Toys and things
+  P('basketball', 'toy', '🏀'), P('football', 'toy', '⚽'), P('beachball', 'toy', '🏐'), P('balloon', 'toy', '🎈', 100), P('kite', 'toy', '🪁', 110),
+  P('teddy', 'toy', '🧸'), P('duck', 'toy', '🦆', 60), P('blocks', 'toy', '🧩'), P('yoyo', 'toy', '🪀', 60), P('guitar', 'toy', '🎸', 110),
+  P('bucket', 'toy', '🪣'), P('lifebuoy', 'toy', '🛟', 90), P('umbrella', 'thing', '☂️', 110), P('book', 'thing', '📚'),
+  P('paint', 'thing', '🎨'), P('phone', 'thing', '📱', 60), P('gift', 'thing', '🎁'), P('rod', 'thing', '🎣', 110), P('broom', 'thing', '🧹', 120),
+  P('tulip', 'thing', '🌷'), P('sunflower', 'thing', '🌻'), P('rose', 'thing', '🌹'), P('bouquet', 'thing', '💐'), P('daisy', 'thing', '🌼'),
+  P('shell', 'thing', '🐚', 60), P('crab', 'thing', '🦀', 70), P('gintaras', 'thing', null, 60), P('euro', 'thing', null, 50), P('ticket', 'thing', '🎟️', 60),
+].map(p => [p.id, p]));
 
-const PETS = [
-  { id: 'dog', emoji: '🐶', price: 40, name: N('Šuniukas', 'Puppy') },
-  { id: 'cat', emoji: '🐱', price: 40, name: N('Kačiukas', 'Kitten') },
-  { id: 'bunny', emoji: '🐰', price: 30, name: N('Triušiukas', 'Bunny') },
-  { id: 'hamster', emoji: '🐹', price: 20, name: N('Žiurkėnukas', 'Hamster') },
-  { id: 'parrot', emoji: '🦜', price: 35, name: N('Papūga', 'Parrot') },
-  { id: 'fish', emoji: '🐠', price: 15, name: N('Žuvytė', 'Fish') },
-  { id: 'turtle', emoji: '🐢', price: 25, name: N('Vėžliukas', 'Turtle') },
-  { id: 'pony', emoji: '🐴', price: 80, name: N('Ponis', 'Pony') },
-  { id: 'unicorn', emoji: '🦄', price: 150, name: N('Vienaragis', 'Unicorn') },
-];
+const PETS = {
+  dog: { emoji: '🐕', sound: 'bark' }, poodle: { emoji: '🐩', sound: 'bark' }, cat: { emoji: '🐈', sound: 'meow' },
+  blackcat: { emoji: '🐈‍⬛', sound: 'meow' }, bunny: { emoji: '🐇', sound: 'squeak' }, hamster: { emoji: '🐹', sound: 'squeak' },
+  parrot: { emoji: '🦜', sound: 'tweet' }, turtle: { emoji: '🐢', sound: 'squeak' }, hedgehog: { emoji: '🦔', sound: 'squeak' },
+  squirrel: { emoji: '🐿️', sound: 'squeak' },
+};
 
-// `enter` = screen opened when the character walks onto the tile.
-const CITY_TILES = [
-  { id: 'home', emoji: '🏠', enter: 'house', name: N('Mano namai', 'My home') },
-  { id: 'foodshop', emoji: '🛒', enter: 'shop-food', name: N('Maisto parduotuvė', 'Food store') },
-  { id: 'clothshop', emoji: '👗', enter: 'shop-clothes', name: N('Drabužių parduotuvė', 'Clothes store') },
-  { id: 'petshop', emoji: '🐾', enter: 'shop-pets', name: N('Gyvūnų parduotuvė', 'Pet store') },
-  { id: 'road', emoji: '', name: N('Kelias', 'Road') },
-  { id: 'water', emoji: '', name: N('Vanduo', 'Water') },
-  { id: 'tree', emoji: '🌳', name: N('Medis', 'Tree') },
-  { id: 'pine', emoji: '🌲', name: N('Eglė', 'Pine') },
-  { id: 'flowers', emoji: '🌷', name: N('Gėlės', 'Flowers') },
-  { id: 'sunflower', emoji: '🌻', name: N('Saulėgrąža', 'Sunflower') },
-  { id: 'fountain', emoji: '⛲', name: N('Fontanas', 'Fountain') },
-  { id: 'house2', emoji: '🏡', name: N('Namelis', 'Cottage') },
-  { id: 'office', emoji: '🏢', name: N('Daugiaaukštis', 'Tower') },
-  { id: 'school', emoji: '🏫', name: N('Mokykla', 'School') },
-  { id: 'hospital', emoji: '🏥', name: N('Ligoninė', 'Hospital') },
-  { id: 'castle', emoji: '🏰', name: N('Pilis', 'Castle') },
-  { id: 'wheel', emoji: '🎡', name: N('Apžvalgos ratas', 'Ferris wheel') },
-  { id: 'tent', emoji: '🎪', name: N('Cirkas', 'Circus') },
-  { id: 'car', emoji: '🚗', name: N('Mašina', 'Car') },
-  { id: 'bus', emoji: '🚌', name: N('Autobusas', 'Bus') },
-];
-
-const FURNITURE = ['🛏️', '🛋️', '🪑', '📺', '🪴', '💡', '🧸', '🛁', '🚽', '🎹', '📚', '🖼️', '🪞', '🎨', '💻', '🎸', '🕰️', '🎈', '🎁', '🧩', '⚽', '🪀', '🌈', '⭐'];
-
-const WALLS = ['#FFE4EC', '#FFF4C7', '#DFF5E1', '#DDEBFF', '#EEE3FF', '#FFFFFF'];
-const FLOORS = ['#E8C9A0', '#C99A6E', '#F3D9E8', '#CFE8F7', '#D8D8D8', '#B9E3B0'];
+// Lists used by dispensers (fridge, stalls, wardrobe...). Cloth ids are prefixed "c:", pets "p:".
+const ALL_CLOTHES = CLOTHES.map(c => 'c:' + c.id);
